@@ -1,0 +1,31 @@
+services:
+  asterisk:
+    image: asterisk:1.0
+    container_name: asterisk
+#    network_mode: host
+    networks:
+      dockervlan:
+        ipv4_address: 10.50.0.171
+#    ports:
+#      - "8080:80/tcp"
+#      - "5060:5060/udp"
+#      - "5060:5060/tcp"
+#      - "10000-10100:10000-10100/udp"
+    volumes:
+      - asterisk:/etc/asterisk
+    #restart: always
+
+volumes:
+  asterisk:
+
+networks:
+  dockervlan:
+    name: dockervlan
+    driver: macvlan
+    driver_opts:
+      parent: eno2
+    ipam:
+      config:
+        - subnet: "10.50.0.0/22"
+          ip_range: "10.50.0.20/22"
+          gateway: "10.50.0.1"
